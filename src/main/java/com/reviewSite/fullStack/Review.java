@@ -1,45 +1,40 @@
 package com.reviewSite.fullStack;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Category {
+public class Review {
 
 	@Id
 	@GeneratedValue
-	private long id;
+	long id;
 	
+	@ManyToOne
+	private Category category;
+
 	private String name;
 
-	@OneToMany(mappedBy = "category")
-	private Collection<Review> reviews;
+	private String description;
 	
-	public long getId() {
-		return this.id;
-	}
-	
-	public Object getName() {
-		return this.name;
+	public String getName() {
+		return name;
 	}
 
-	public Collection<Review> getReviews() {
-		return reviews;
+	public String getDescription() {
+		return description;
 	}
 	
-	public Category() {
+	public Review() {
 		
 	}
 	
-	public Category(String name, Review...reviews) {
+	public Review(String name, String description, Category category) {
 		this.name = name;
-		this.reviews = new HashSet<>(Arrays.asList(reviews));
+		this.description = description;
+		this.category = category;
 	}
 
 	@Override
@@ -58,7 +53,7 @@ public class Category {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Category other = (Category) obj;
+		Review other = (Review) obj;
 		if (id != other.id)
 			return false;
 		return true;
