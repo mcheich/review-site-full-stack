@@ -2,6 +2,7 @@ package com.reviewSite.fullStack;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertThat;
@@ -159,6 +160,23 @@ class JPAMappingsTest {
 		assertThat(review.getTags(), containsInAnyOrder(tagOne, tagTwo));
 	}
 	
+	/* Cannot figure out how to make this test work*/
+	@Test
+	public void shouldFindCategoriesForReviewContains() {
+		//Arrange
+		Category category = categoryRepo.save(new Category("categoryName")); 
+		Review review = reviewRepo.save(new Review("reviewName", "description", category));
+		
+		
+		//Act
+		entityManager.flush();
+		entityManager.clear();
+		
+		Optional<Category> result = categoryRepo.findByReviewsContains(review);
+ 		category = result.get();
+		
+		//Assert
+		assertThat(category.getName(), is("categoryName"));
+	}
 	
-
 }

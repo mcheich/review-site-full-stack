@@ -13,10 +13,11 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Review {
 
+	/************* Field Values ****************/
 	@Id
 	@GeneratedValue
 	long id;
-	
+
 	@ManyToOne
 	private Category category;
 
@@ -27,10 +28,20 @@ public class Review {
 	@ManyToMany
 	private Collection<Tag> tags;
 
+	/************* Getters ****************/
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public Collection<Tag> getTags() {
+		return this.tags;
+	}
+
 	public long getId() {
 		return this.id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -38,24 +49,26 @@ public class Review {
 	public String getDescription() {
 		return description;
 	}
-	
+
+	/************* Constructors ****************/
 	public Review() {
-		
+
 	}
-	
+
 	public Review(String name, String description, Category category) {
 		this.name = name;
 		this.description = description;
 		this.category = category;
 	}
 
-	public Review(String name, String description, Category category, Tag...tags) {
+	public Review(String name, String description, Category category, Tag... tags) {
 		this.name = name;
 		this.description = description;
 		this.category = category;
 		this.tags = new HashSet<>(Arrays.asList(tags));
 	}
 
+	/************* Overrides ****************/
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -76,9 +89,5 @@ public class Review {
 		if (id != other.id)
 			return false;
 		return true;
-	}
-
-	public Collection<Tag> getTags() {
-		return this.tags;
 	}
 }

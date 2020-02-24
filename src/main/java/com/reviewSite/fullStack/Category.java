@@ -12,19 +12,21 @@ import javax.persistence.OneToMany;
 @Entity
 public class Category {
 
+	/************* Field Values ****************/
 	@Id
 	@GeneratedValue
 	private long id;
-	
+
 	private String name;
 
 	@OneToMany(mappedBy = "category")
 	private Collection<Review> reviews;
-	
+
 	public long getId() {
 		return this.id;
 	}
-	
+
+	/************* Getters ****************/
 	public Object getName() {
 		return this.name;
 	}
@@ -32,16 +34,18 @@ public class Category {
 	public Collection<Review> getReviews() {
 		return reviews;
 	}
-	
+
+	/************* Constructors ****************/
 	public Category() {
-		
+
 	}
-	
-	public Category(String name, Review...reviews) {
+
+	public Category(String name, Review... reviews) {
 		this.name = name;
 		this.reviews = new HashSet<>(Arrays.asList(reviews));
 	}
 
+	/************* Overrides ****************/
 	@Override
 	public int hashCode() {
 		final int prime = 31;

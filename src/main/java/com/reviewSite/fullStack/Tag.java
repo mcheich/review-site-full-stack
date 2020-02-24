@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 @Entity
 public class Tag {
 
+	/************* Field Values ****************/
 	@Id
 	@GeneratedValue
 	long id;
@@ -21,6 +22,7 @@ public class Tag {
 	
 	private String name;
 	
+	/************* Getters ****************/
 	public long getId() {
 		return this.id;
 	}
@@ -29,6 +31,7 @@ public class Tag {
 		return this.name;
 	}
 	
+	/************* Constructors ****************/
 	public Tag() {
 		
 	}
@@ -38,6 +41,7 @@ public class Tag {
 		this.reviews = new HashSet<>(Arrays.asList(reviews));
 	}
 
+	/************* Overrides ****************/
 	@Override
 	public int hashCode() {
 		final int prime = 31;
