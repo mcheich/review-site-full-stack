@@ -8,52 +8,34 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 
 @Entity
-public class Review {
+public class Tag {
 
 	@Id
 	@GeneratedValue
 	long id;
 	
-	@ManyToOne
-	private Category category;
-
-	private String name;
-
-	private String description;
-
 	@ManyToMany
-	private Collection<Tag> tags;
-
+	Collection<Review> reviews;
+	
+	private String name;
+	
 	public long getId() {
 		return this.id;
 	}
 	
 	public String getName() {
-		return name;
-	}
-
-	public String getDescription() {
-		return description;
+		return this.name;
 	}
 	
-	public Review() {
+	public Tag() {
 		
 	}
 	
-	public Review(String name, String description, Category category) {
+	public Tag(String name, Review...reviews) {
 		this.name = name;
-		this.description = description;
-		this.category = category;
-	}
-
-	public Review(String name, String description, Category category, Tag...tags) {
-		this.name = name;
-		this.description = description;
-		this.category = category;
-		this.tags = new HashSet<>(Arrays.asList(tags));
+		this.reviews = new HashSet<>(Arrays.asList(reviews));
 	}
 
 	@Override
@@ -72,13 +54,10 @@ public class Review {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Review other = (Review) obj;
+		Tag other = (Tag) obj;
 		if (id != other.id)
 			return false;
 		return true;
 	}
 
-	public Collection<Tag> getTags() {
-		return this.tags;
-	}
 }
