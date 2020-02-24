@@ -18,6 +18,10 @@ public class Review {
 	private String name;
 
 	private String description;
+
+	public long getId() {
+		return this.id;
+	}
 	
 	public String getName() {
 		return name;
@@ -58,5 +62,6 @@ public class Review {
 			return false;
 		return true;
 	}
+
 
 }

@@ -66,5 +66,22 @@ class JPAMappingsTest {
 		// Assert
 		assertThat(category.getReviews(), containsInAnyOrder(reviewOne, reviewTwo));
 	}
+	
+	@Test
+	public void shouldSaveAndLoadReview() {
+		//Arrange
+		Category category = categoryRepo.save(new Category("name"));
+		Review review = reviewRepo.save(new Review("name", "description", category));
+		long reviewId = review.getId();
+		//Act
+		entityManager.flush();
+		entityManager.clear();
+		
+		Optional<Review> result = reviewRepo.findById(reviewId);
+		review = result.get();
+		
+		//Assert
+		assertThat(review.getName(), is("name"));
+	}
 
 }
