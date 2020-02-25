@@ -160,7 +160,7 @@ class JPAMappingsTest {
 		assertThat(review.getTags(), containsInAnyOrder(tagOne, tagTwo));
 	}
 	
-	/* Cannot figure out how to make this test work*/
+	
 	@Test
 	public void shouldFindCategoriesForReviewContains() {
 		//Arrange
@@ -177,6 +177,25 @@ class JPAMappingsTest {
 		
 		//Assert
 		assertThat(category.getName(), is("categoryName"));
+	}
+
+	@Test
+	public void shouldFindReviewsForCategoryId() {
+		//Arrange
+		Category category = categoryRepo.save(new Category("categoryName"));
+		long categoryId = category.getId();
+		Review review = reviewRepo.save(new Review("reviewName", "description", category));
+		
+		
+		//Act
+		entityManager.flush();
+		entityManager.clear();
+		
+		Optional<Review> result = reviewRepo.findByCategoryId(categoryId);
+		review = result.get();
+		
+		//Assert
+		assertThat(review.getName(), is("reviewName"));
 	}
 	
 }

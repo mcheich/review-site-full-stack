@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReviewRepository extends CrudRepository<Review, Long> {
 
+	Optional<Review> findByCategoryId(long categoryId);
+
 }

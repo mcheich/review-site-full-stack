@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.ui.Model;
 
-public class ReviewsControllerTest {
+public class ReviewControllerTest {
 
 	@Mock
 	private Model model;
@@ -61,7 +61,7 @@ public class ReviewsControllerTest {
 	}
 	
 	@Test
-	public void shouldAddSingleReviewToModel() {
+	public void shouldAddSingleReviewToModel() throws ReviewNotFoundException {
 		//Arrange
 		long id = 1;
 		when(reviewRepo.findById(id)).thenReturn(Optional.of(reviewOne));
