@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="./css/styles.css">
+    <link rel="stylesheet" type="text/css" href="./css/normalize.css">
     <title>Category</title>
 </head>
 
@@ -12,7 +14,7 @@
         <h1>Reviews in this Category</h1>
     </header>
 
-    <div th:each="review : ${category}">
+    <div id="reviewsInCategory" th:each="review : ${category}">
         <h2>
             <a th:href="@{/review(id=${review.id})}" th:text="${review.name}"></a>
         </h2>

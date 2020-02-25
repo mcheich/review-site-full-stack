@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="./css/styles.css">
+    <link rel="stylesheet" type="text/css" href="./css/normalize.css">
     <title>A Review</title>
 </head>
 
@@ -12,16 +14,20 @@
         <h1>Review Details</h1>
     </header>
 
-    <div>
-        <h2 th:text="${review.name}"></h2>
+    <div id="reviewDescription">
+        <h2 id="reviewName" th:text="${review.name}"></h2>
         <h3>Description:</h3>
         <p th:text="${review.description}"></p>
     </div>
 
+
     <h3>Tags:</h3>
-    <div th:each="tag: ${review.tags}">
-        <p th:text="${tag.name}"></p>
-    </div>
+    <section id="tags">
+        <div th:each="tag: ${review.tags}">
+            <p th:text="${tag.name}"></p>
+        </div>
+    </section>
+
 
     <footer>
         <a th:href="@{/category(id=${review.category.id})}" th:text="${review.category.name}"></a>
