@@ -1,25 +1,69 @@
 package com.reviewSite.fullStack;
 
-import static org.assertj.core.api.Assertions.assertThat;
+//import static org.assertj.core.api.Assertions.assertThat;
+//import static org.hamcrest.CoreMatchers.is;
+//import static org.hamcrest.Matchers.contains;
+//import static org.hamcrest.Matchers.containsInAnyOrder;
+//import static org.hamcrest.Matchers.greaterThan;
+//import static org.junit.Assert.assertThat;
+//import static org.junit.Assert.assertThat;
+//
+//import java.util.Collection;
+//import java.util.Optional;
+//
+//import javax.annotation.Resource;
+//
+//import org.junit.Test;
+////import org.junit.jupiter.api.Test;
+//import org.junit.runner.RunWith;
+//import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+//import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+//import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+/* ^^^^^ MY IMPORTS ^^^^^^^*/
+/*  HIS IMPORTS follow*/
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertThat;
 
+import java.util.Collection;
 import java.util.Optional;
 
+import org.junit.Test;
 import javax.annotation.Resource;
+//import org.junit.jupiter.api.Test;
 
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+/*
+ * Michael Note to Self
+ * 
+ * I have no idea what happened here.
+ * 
+ * All my tests were passing.
+ * Now I am getting the error:
+ * class "org.hamcrest.Matchers"'s signer information does not match signer information of other classes in the same package
+ * on all the tests here that are failing.
+ * 
+ * I think this has something to do with the fact that I am not sure what the differences between
+ * org.junit.Test vs jupiter.api.Test
+ * 
+ * Also, I am not sure I understand what org.hamcrest.CoreMatchers actually is.
+ * 
+ * The actual application appears to be functioning OK, 
+ * so I am going to push through regardless of these tests. 
+ * 
+ * 
+ * */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @DataJpaTest
-class JPAMappingsTest {
+public class JPAMappingsTest {
 
 	@Resource
 	private TestEntityManager entityManager;
@@ -105,7 +149,7 @@ class JPAMappingsTest {
 
 	@Test
 	public void shouldSaveAndLoadTag() {
-		//Arrange
+		// Arrange
 		Category category = categoryRepo.save(new Category("name"));
 		Review reviewOne = reviewRepo.save(new Review("nameOne", "descriptionOne", category));
 		Review reviewTwo = reviewRepo.save(new Review("nameTwo", "descriptionTwo", category));
@@ -115,17 +159,17 @@ class JPAMappingsTest {
 		// Act
 		entityManager.flush();
 		entityManager.clear();
-		
+
 		Optional<Tag> result = tagRepo.findById(tagId);
 		tag = result.get();
-		
-		//Assert
+
+		// Assert
 		assertThat(tag.getName(), is("tag"));
 	}
-	
+
 	@Test
 	public void shouldGenerateTagId() {
-		//Arrange
+		// Arrange
 		Category category = categoryRepo.save(new Category("name"));
 		Review reviewOne = reviewRepo.save(new Review("nameOne", "descriptionOne", category));
 		Review reviewTwo = reviewRepo.save(new Review("nameTwo", "descriptionTwo", category));
@@ -135,67 +179,82 @@ class JPAMappingsTest {
 		// Act
 		entityManager.flush();
 		entityManager.clear();
-		
-		//Assert
-		assertThat(tagId, is(greaterThan(0L)));		
+
+		// Assert
+		assertThat(tagId, is(greaterThan(0L)));
 	}
-	
+
 	@Test
 	public void shouldEstablishReveiwToTagRelationship() {
-		//Arrange
+		// Arrange
 		Category category = categoryRepo.save(new Category("name"));
 		Tag tagOne = tagRepo.save(new Tag("tagOne"));
 		Tag tagTwo = tagRepo.save(new Tag("tagTwo"));
 		Review review = reviewRepo.save(new Review("nameOne", "descriptionOne", category, tagOne, tagTwo));
 		long reviewId = review.getId();
-		
-		//Act
+
+		// Act
 		entityManager.flush();
 		entityManager.clear();
-		
+
 		Optional<Review> result = reviewRepo.findById(reviewId);
 		review = result.get();
-		
-		//Assert
+
+		// Assert
 		assertThat(review.getTags(), containsInAnyOrder(tagOne, tagTwo));
 	}
-	
-	
+
 	@Test
-	public void shouldFindCategoriesForReviewContains() {
-		//Arrange
-		Category category = categoryRepo.save(new Category("categoryName")); 
+	public void shouldFindACategoryForReviewContains() {
+		// Arrange
+		Category category = categoryRepo.save(new Category("categoryName"));
 		Review review = reviewRepo.save(new Review("reviewName", "description", category));
-		
-		
-		//Act
+
+		// Act
 		entityManager.flush();
 		entityManager.clear();
-		
+
 		Optional<Category> result = categoryRepo.findByReviewsContains(review);
- 		category = result.get();
-		
-		//Assert
+		category = result.get();
+
+		// Assert
 		assertThat(category.getName(), is("categoryName"));
 	}
 
 	@Test
-	public void shouldFindReviewsForCategoryId() {
-		//Arrange
+	public void shouldFindAReviewForCategoryId() {
+		// Arrange
 		Category category = categoryRepo.save(new Category("categoryName"));
 		long categoryId = category.getId();
 		Review review = reviewRepo.save(new Review("reviewName", "description", category));
-		
-		
-		//Act
+
+		// Act
 		entityManager.flush();
 		entityManager.clear();
-		
-		Optional<Review> result = reviewRepo.findByCategoryId(categoryId);
-		review = result.get();
-		
-		//Assert
-		assertThat(review.getName(), is("reviewName"));
+
+		Collection<Review> result = reviewRepo.findByCategoryId(categoryId);
+		// review = result.get();
+
+		// Assert
+		assertThat(result, contains(review));
 	}
-	
+
+	@Test
+	public void shouldFindAllReviewsForCategoryId() {
+		// Arrange
+		Category category = categoryRepo.save(new Category("categoryName"));
+		Review reviewTwo = reviewRepo.save(new Review("reviewOne", "descriptionOne", category));
+		Review reviewOne = reviewRepo.save(new Review("reviewTwo", "descriptionTwo", category));
+		long categoryId = category.getId();
+
+		// Act
+		entityManager.flush();
+		entityManager.clear();
+
+		Collection<Review> result = reviewRepo.findByCategoryId(categoryId);
+
+		// Assert
+		assertThat(result, containsInAnyOrder(reviewOne, reviewTwo));
+	}
+
 }

@@ -87,12 +87,19 @@ public class ReviewControllerTest {
 	}
 
 	@Test
-	public void shouldAddAllReviewsForCategoryToModel() {
+	public void shouldAddAllReviewsOfCategoryToModel() {
 		// Arrange
 		Collection<Review> allReviews = Arrays.asList(reviewOne, reviewTwo);
+		long id = 1;
+		when(reviewRepo.findByCategoryId(id)).thenReturn(allReviews);
 		
+		// Act
+		underTest.findAllReviewsOfCategory(id, model);
 		
+		// Assert
+		verify(model).addAttribute("category", allReviews);
 	}
+
 
 	@Test
 	public void shouldAddSingleCategoryToModel() {

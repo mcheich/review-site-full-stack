@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>A Review</title>
+</head>
+
+<body>
+    <header>
+        <h1>Review Details</h1>
+    </header>
+
+    <div>
+        <h2 th:text="${review.name}"></h2>
+        <h3>Description:</h3>
+        <p th:text="${review.description}"></p>
+    </div>
+
+    <h3>Tags:</h3>
+    <div th:each="tag: ${review.tags}">
+        <p th:text="${tag.name}"></p>
+    </div>
+
+    <footer>
+        <a th:href="@{/category(id=${review.category.id})}" th:text="${review.category.name}"></a>
+    </footer>
+
+</body>
+
+</html>

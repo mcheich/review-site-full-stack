@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -39,25 +40,39 @@ class ReviewControllerMockMvcTest {
 	
 	@Mock
 	private Review reviewOne;
+
+	@Mock
+	private Review reviewTwo;
+
+	@Mock
+	private Category categoryOne;
 	
+	@Mock
+	private Category categoryTwo;
+	
+	@Test
+	public void shouldRouteToAllReviewsOfACategory() throws Exception {
+		mvc.perform(get("/category?id=1")).andExpect(view().name(is("category")));
+	}
+	
+	@Test
+	public void shouldAddAllReviewsOfACategoryToTheModel() throws Exception {
+		Collection<Review> reviews = Arrays.asList(reviewOne, reviewTwo);
+		when(reviewRepo.findByCategoryId(1L)).thenReturn(reviews);
+		mvc.perform(get("/category?id=1")).andExpect(model().attribute("category", is(reviews)));
+	}
+	
+	@Test
+	public void shouldRouteToAllCategories() throws Exception {
+		mvc.perform(get("/categories")).andExpect(view().name(is("categories")));
+	}
 
 	@Test
-	public void shouldGetStatusOfOkWhenWhenNavigatingToAllReviewsOfCategory() throws Exception {
-		when(reviewRepo.findById(1L)).thenReturn(Optional.of(reviewOne));
-		mvc.perform(get("/categories?id=1")).andExpect(status().isOk())
-				.andExpect(view().name("category"));
+	public void shouldAllCategoriesToTheModel() throws Exception {
+		Collection<Category> allCategories = Arrays.asList(categoryOne, categoryTwo);
+		when(categoryRepo.findAll()).thenReturn(allCategories);
+		mvc.perform(get("/categories")).andExpect(model().attribute("categories", allCategories));
 	}
 	
 	
-	@Test
-	public void shouldAddSingleReviewToTheModel() throws Exception {
-		when(reviewRepo.findById(1L)).thenReturn(Optional.of(reviewOne));
-		mvc.perform(get("/categories?id=1")).andExpect(model().attribute("review", is(reviewOne)));
-	}
-	
-	@Test
-	public void shouldAllReviewsOfACategoryToTheModel() throws Exception {
-		//when(reviewRepo.findByCategoryId(categoryId))
-	}
-
 }
