@@ -1,27 +1,5 @@
 package com.reviewSite.fullStack;
 
-//import static org.assertj.core.api.Assertions.assertThat;
-//import static org.hamcrest.CoreMatchers.is;
-//import static org.hamcrest.Matchers.contains;
-//import static org.hamcrest.Matchers.containsInAnyOrder;
-//import static org.hamcrest.Matchers.greaterThan;
-//import static org.junit.Assert.assertThat;
-//import static org.junit.Assert.assertThat;
-//
-//import java.util.Collection;
-//import java.util.Optional;
-//
-//import javax.annotation.Resource;
-//
-//import org.junit.Test;
-////import org.junit.jupiter.api.Test;
-//import org.junit.runner.RunWith;
-//import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-//import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-//import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-/* ^^^^^ MY IMPORTS ^^^^^^^*/
-/*  HIS IMPORTS follow*/
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -40,26 +18,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-/*
- * Michael Note to Self
- * 
- * I have no idea what happened here.
- * 
- * All my tests were passing.
- * Now I am getting the error:
- * class "org.hamcrest.Matchers"'s signer information does not match signer information of other classes in the same package
- * on all the tests here that are failing.
- * 
- * I think this has something to do with the fact that I am not sure what the differences between
- * org.junit.Test vs jupiter.api.Test
- * 
- * Also, I am not sure I understand what org.hamcrest.CoreMatchers actually is.
- * 
- * The actual application appears to be functioning OK, 
- * so I am going to push through regardless of these tests. 
- * 
- * 
- * */
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @DataJpaTest

@@ -17,8 +17,8 @@ public class Tag {
 	@GeneratedValue
 	long id;
 	
-	@ManyToMany
-	Collection<Review> reviews;
+	@ManyToMany(mappedBy = "tags")
+	private Collection<Review> reviews;
 	
 	private String name;
 	

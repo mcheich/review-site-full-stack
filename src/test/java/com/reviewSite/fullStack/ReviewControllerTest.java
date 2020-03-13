@@ -152,5 +152,24 @@ public class ReviewControllerTest {
 		// Assert
 		verify(model).addAttribute("tags", allTags);
 	}
+	
+	@Test
+	public void shouldAddAllTaggedReviewsToModel() {
+		//Arrange
+		String tagName = tagOne.getName();
+		Review review1 = new Review("name1","description1", categoryOne, tagOne);
+		Review review2 = new Review("name2","description2", categoryTwo, tagOne);
+		Collection<Review> taggedReviews = Arrays.asList(review1, review2);
+		when(reviewRepo.findByTagsContains(tagOne)).thenReturn(taggedReviews);
+		
+		//Act
+		underTest.findAllReviewsOfTag(tagName, model);
+
+		System.out.println(reviewRepo.findByTagsContains(tagOne));
+		
+		
+		//Assert
+		verify(model).addAttribute("reviews", taggedReviews);
+	}
 
 }

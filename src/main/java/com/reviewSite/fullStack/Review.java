@@ -7,6 +7,7 @@ import java.util.HashSet;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -23,6 +24,7 @@ public class Review {
 
 	private String name;
 
+	@Lob
 	private String description;
 
 	@ManyToMany

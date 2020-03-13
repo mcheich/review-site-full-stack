@@ -24,7 +24,9 @@
     <h3>Tags:</h3>
     <section id="tags">
         <div th:each="tag: ${review.tags}">
-            <p th:text="${tag.name}"></p>
+            <!--<p th:text="${tag.name}">-->
+            <a th:href="@{/tags(tagName=${tag.name})}" th:text="${tag.name}"></a>
+            <!-- </p>-->
         </div>
     </section>
 

@@ -1,5 +1,6 @@
 package com.reviewSite.fullStack;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import javax.annotation.Resource;
@@ -23,26 +24,25 @@ public class ReviewController {
 	private TagRepository tagRepo;
 
 	@RequestMapping("/review")
-	public String findOneReview(@RequestParam(value="id") long id, Model model) throws ReviewNotFoundException {
+	public String findOneReview(@RequestParam(value = "id") long id, Model model) throws ReviewNotFoundException {
 
 		Optional<Review> review = reviewRepo.findById(id);
-		
 
 		if (review.isPresent()) {
 			model.addAttribute("review", review.get());
 			return "review";
 		}
-		
+
 		throw new ReviewNotFoundException();
 
 	}
 
 	@RequestMapping("/category")
-	public String findAllReviewsOfCategory(@RequestParam(value="id") long id, Model model) {
-		
+	public String findAllReviewsOfCategory(@RequestParam(value = "id") long id, Model model) {
+
 		model.addAttribute("category", reviewRepo.findByCategoryId(id));
 		return "category";
-		
+
 	}
 
 	public void findAllReviews(Model model) {
@@ -70,20 +70,26 @@ public class ReviewController {
 	}
 
 	public void findOneTag(long id, Model model) {
-		
+
 		Optional<Tag> tag = tagRepo.findById(id);
 
 		if (tag.isPresent()) {
 			model.addAttribute("tag", tag.get());
 		}
-		
+
 	}
 
 	public void findAllTags(Model model) {
-		
+
 		model.addAttribute("tags", tagRepo.findAll());
-		
+
 	}
 
+	@RequestMapping("/tags")
+	public String findAllReviewsOfTag(@RequestParam(value="tagName") String tagName, Model model) {
+		Tag tag = tagRepo.findByName(tagName);
+		model.addAttribute("reviews", reviewRepo.findByTagsContains(tag));
+		return "tags";
+	}
 
 }
