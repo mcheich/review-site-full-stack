@@ -7,7 +7,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -91,5 +93,22 @@ public class ReviewController {
 		model.addAttribute("reviews", reviewRepo.findByTagsContains(tag));
 		return "tags";
 	}
+	
+	@RequestMapping(path="/remove-tag/{tagId}/{reviewId}", method=RequestMethod.POST)
+	public String removeTagFromReview(@PathVariable long tagId, @PathVariable long reviewId, Model model) {
+		
+		Tag tagToRemove = tagRepo.findById(tagId).get();
+		Review review = reviewRepo.findById(reviewId).get();
+
+		if(tagToRemove != null) {
+				review.removeTag(tagToRemove);
+				reviewRepo.save(review);	
+		}
+		
+		model.addAttribute("review", review);
+		
+		return "partials/tag-list-removed";
+	}
+	
 
 }

@@ -20,20 +20,25 @@
         <p th:text="${review.description}"></p>
     </div>
 
-
     <h3>Tags:</h3>
-    <section id="tags">
-        <div th:each="tag: ${review.tags}">
-            <!--<p th:text="${tag.name}">-->
-            <a th:href="@{/tags(tagName=${tag.name})}" th:text="${tag.name}"></a>
-            <!-- </p>-->
-        </div>
-    </section>
 
+    <section id="tags" class="tag-list">
+        <ul>
+            <li th:each="tag: ${review.tags}">
+                <a th:href="@{/tags(tagName=${tag.name})}" th:text="${tag.name}"></a>
+                <input class="reviewId" name="review-id" type="hidden" th:value="${review.id}">
+                <input class="topicId" name="tag-id" type="hidden" th:value="${tag.id}">
+                <button class="x">&times;</button>
+            </li>
+        </ul>
+
+    </section>
 
     <footer>
         <a th:href="@{/category(id=${review.category.id})}" th:text="${review.category.name}"></a>
     </footer>
+
+    <script src="./js/ajax.js"></script>
 
 </body>
 

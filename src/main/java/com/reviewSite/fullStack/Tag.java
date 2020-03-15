@@ -31,6 +31,11 @@ public class Tag {
 		return this.name;
 	}
 	
+	
+	public Collection<Review> getReviews() {
+		return reviews;
+	}
+
 	/************* Constructors ****************/
 	public Tag() {
 		

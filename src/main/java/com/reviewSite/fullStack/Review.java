@@ -92,4 +92,10 @@ public class Review {
 			return false;
 		return true;
 	}
+
+	/************* General ****************/
+
+	public void removeTag(Tag tagToRemove) {
+		tags.remove(tagToRemove);
+	}
 }
