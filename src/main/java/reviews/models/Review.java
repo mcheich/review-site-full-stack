@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Review {
@@ -29,6 +30,9 @@ public class Review {
 
 	@ManyToMany
 	private Collection<Tag> tags;
+	
+	@OneToMany
+	private Collection<Comment> comments;
 
 	/************* Getters ****************/
 
@@ -52,6 +56,10 @@ public class Review {
 		return description;
 	}
 
+	public Collection<Comment> getComments() {
+		return this.comments;
+	}
+
 	/************* Constructors ****************/
 	public Review() {
 
@@ -68,6 +76,13 @@ public class Review {
 		this.description = description;
 		this.category = category;
 		this.tags = new HashSet<>(Arrays.asList(tags));
+	}
+
+	public Review(String name, String description, Category category, Comment... comments) {
+		this.name = name;
+		this.description = description;
+		this.category = category;
+		this.comments = new HashSet<>(Arrays.asList(comments));
 	}
 
 	/************* Overrides ****************/
@@ -98,4 +113,5 @@ public class Review {
 	public void removeTag(Tag tagToRemove) {
 		tags.remove(tagToRemove);
 	}
+
 }
