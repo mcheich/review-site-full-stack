@@ -24,7 +24,7 @@ import reviews.models.Comment;
 import reviews.models.Review;
 import reviews.models.Tag;
 import reviews.repositories.CategoryRepository;
-import reviews.repositories.CommentRepo;
+import reviews.repositories.CommentRepository;
 import reviews.repositories.ReviewRepository;
 import reviews.repositories.TagRepository;
 
@@ -45,7 +45,7 @@ public class JPAMappingsTest {
 	private TagRepository tagRepo;
 
 	@Resource
-	private CommentRepo commentRepo;
+	private CommentRepository commentRepo;
 
 	@Test
 	public void shouldSaveAndLoadComments() {
@@ -67,14 +67,14 @@ public class JPAMappingsTest {
 	@Test
 	public void shouldEstablishCommentToReviewRelationship() {
 		// Arrange
-		Comment commentOne = new Comment("commentOne");
-		commentRepo.save(commentOne);
-		Comment commentTwo = new Comment("commentTwo");
-		commentRepo.save(commentTwo);
 		Category category = new Category("name");
 		categoryRepo.save(category);
-		Review review = new Review("name", "description", category, commentOne, commentTwo);
+		Review review = new Review("name", "description", category);
 		reviewRepo.save(review);
+		Comment commentOne = new Comment("commentOne", review);
+		commentRepo.save(commentOne);
+		Comment commentTwo = new Comment("commentTwo", review);
+		commentRepo.save(commentTwo);
 		
 		long reviewId = review.getId();
 		
@@ -85,6 +85,27 @@ public class JPAMappingsTest {
 		Optional<Review> result = reviewRepo.findById(reviewId);
 		review = result.get();
 
+		//Assert
+		assertThat(review.getComments(), containsInAnyOrder(commentOne, commentTwo));
+	}
+	
+	@Test
+	public void shouldFindCommentsForReviewId() {
+		Review review = new Review();
+		reviewRepo.save(review);
+		Comment commentOne = new Comment("commentOne", review);
+		commentRepo.save(commentOne);
+		Comment commentTwo = new Comment("commentTwo", review);
+		commentRepo.save(commentTwo);
+		long reviewId = review.getId();
+		
+		//Act
+		entityManager.flush();
+		entityManager.clear();
+		
+		Optional<Review> result = reviewRepo.findById(reviewId);
+		review = result.get();
+		
 		//Assert
 		assertThat(review.getComments(), containsInAnyOrder(commentOne, commentTwo));
 	}

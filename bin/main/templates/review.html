@@ -20,14 +20,36 @@
         <p th:text="${review.description}"></p>
     </div>
 
+    <h3>Comments:</h3>
+    <form action="" method="post">
+        <div>
+            <label>Submit Comment</label>
+            <input type="text" name="commentText" placeholder="comments here">
+        </div>
+
+        <div>
+            <input type="hidden" name="Id" th:value="${review.id}">
+        </div>
+
+        <div>
+            <button th:formaction="@{add-comment}">Submit Comment</button>
+        </div>
+    </form>
+
+    <section class="comment-list">
+        <ul th:each="comment: ${comments}">
+            <li th:text="${comment.commentText}"></li>
+        </ul>
+    </section>
+
     <h3>Tags:</h3>
 
     <section id="tags" class="tag-list">
         <ul>
             <li th:each="tag: ${review.tags}">
                 <a th:href="@{/tags(tagName=${tag.name})}" th:text="${tag.name}"></a>
-                <input class="reviewId" name="review-id" type="hidden" th:value="${review.id}">
-                <input class="topicId" name="tag-id" type="hidden" th:value="${tag.id}">
+                <input class="reviewId" name="review-id" type="hidden" th:value="${review.id}" />
+                <input class="topicId" name="tag-id" type="hidden" th:value="${tag.id}" />
                 <button class="x">&times;</button>
             </li>
         </ul>

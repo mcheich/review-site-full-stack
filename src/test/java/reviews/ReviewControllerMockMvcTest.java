@@ -25,8 +25,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import reviews.controllers.ReviewController;
 import reviews.models.Category;
+import reviews.models.Comment;
 import reviews.models.Review;
 import reviews.repositories.CategoryRepository;
+import reviews.repositories.CommentRepository;
 import reviews.repositories.ReviewRepository;
 import reviews.repositories.TagRepository;
 
@@ -47,6 +49,9 @@ public class ReviewControllerMockMvcTest {
 	@MockBean
 	private TagRepository tagRepo;
 	
+	@MockBean
+	private CommentRepository commentRepo;
+	
 	@Mock
 	private Review reviewOne;
 
@@ -58,6 +63,12 @@ public class ReviewControllerMockMvcTest {
 	
 	@Mock
 	private Category categoryTwo;
+
+	@Mock
+	private Comment commentOne;
+
+	@Mock
+	private Comment commentTwo;
 	
 	@Test
 	public void shouldRouteToAllReviewsOfACategory() throws Exception {
@@ -77,7 +88,7 @@ public class ReviewControllerMockMvcTest {
 	}
 
 	@Test
-	public void shouldAllCategoriesToTheModel() throws Exception {
+	public void shouldAddCategoriesToTheModel() throws Exception {
 		Collection<Category> allCategories = Arrays.asList(categoryOne, categoryTwo);
 		when(categoryRepo.findAll()).thenReturn(allCategories);
 		mvc.perform(get("/categories")).andExpect(model().attribute("categories", allCategories));

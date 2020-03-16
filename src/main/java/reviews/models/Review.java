@@ -31,7 +31,7 @@ public class Review {
 	@ManyToMany
 	private Collection<Tag> tags;
 	
-	@OneToMany
+	@OneToMany(mappedBy = "review")
 	private Collection<Comment> comments;
 
 	/************* Getters ****************/

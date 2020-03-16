@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import reviews.ReviewNotFoundException;
 import reviews.models.Category;
+import reviews.models.Comment;
 import reviews.models.Review;
 import reviews.models.Tag;
 import reviews.repositories.CategoryRepository;
+import reviews.repositories.CommentRepository;
 import reviews.repositories.ReviewRepository;
 import reviews.repositories.TagRepository;
-
 
 @Controller
 public class ReviewController {
@@ -33,13 +34,18 @@ public class ReviewController {
 	@Resource
 	private TagRepository tagRepo;
 
+	@Resource
+	private CommentRepository commentRepo;
+
 	@RequestMapping("/review")
 	public String findOneReview(@RequestParam(value = "id") long id, Model model) throws ReviewNotFoundException {
 
 		Optional<Review> review = reviewRepo.findById(id);
+		Collection<Comment> comments = review.get().getComments();
 
 		if (review.isPresent()) {
 			model.addAttribute("review", review.get());
+			model.addAttribute("comments", comments);
 			return "review";
 		}
 
@@ -96,27 +102,37 @@ public class ReviewController {
 	}
 
 	@RequestMapping("/tags")
-	public String findAllReviewsOfTag(@RequestParam(value="tagName") String tagName, Model model) {
+	public String findAllReviewsOfTag(@RequestParam(value = "tagName") String tagName, Model model) {
 		Tag tag = tagRepo.findByName(tagName);
 		model.addAttribute("reviews", reviewRepo.findByTagsContains(tag));
 		return "tags";
 	}
-	
-	@RequestMapping(path="/remove-tag/{tagId}/{reviewId}", method=RequestMethod.POST)
+
+	@RequestMapping(path = "/remove-tag/{tagId}/{reviewId}", method = RequestMethod.POST)
 	public String removeTagFromReview(@PathVariable long tagId, @PathVariable long reviewId, Model model) {
-		
+
 		Tag tagToRemove = tagRepo.findById(tagId).get();
 		Review review = reviewRepo.findById(reviewId).get();
 
-		if(tagToRemove != null) {
-				review.removeTag(tagToRemove);
-				reviewRepo.save(review);	
+		if (tagToRemove != null) {
+			review.removeTag(tagToRemove);
+			reviewRepo.save(review);
 		}
-		
+
 		model.addAttribute("review", review);
-		
+
 		return "partials/tag-list-removed";
 	}
-	
+
+	@RequestMapping("/add-comment")
+	public String addCommentsToReview(@RequestParam(value = "Id") long Id, String commentText) {
+
+		Optional<Review> review = reviewRepo.findById(Id);
+		Comment comment = new Comment(commentText, review.get());
+		commentRepo.save(comment);
+		
+		return "redirect:/review?id=" + Id;
+
+	}
 
 }

@@ -1,6 +1,7 @@
 package reviews;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 //import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.Before;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -19,9 +21,11 @@ import org.springframework.ui.Model;
 import reviews.ReviewNotFoundException;
 import reviews.controllers.ReviewController;
 import reviews.models.Category;
+import reviews.models.Comment;
 import reviews.models.Review;
 import reviews.models.Tag;
 import reviews.repositories.CategoryRepository;
+import reviews.repositories.CommentRepository;
 import reviews.repositories.ReviewRepository;
 import reviews.repositories.TagRepository;
 
@@ -64,6 +68,9 @@ public class ReviewControllerTest {
 
 	@Mock
 	private Tag tagTwo;
+	
+	@Mock
+	private CommentRepository commentRepo;
 
 	@Before
 	public void setUp() {
@@ -181,6 +188,22 @@ public class ReviewControllerTest {
 		
 		//Assert
 		verify(model).addAttribute("reviews", taggedReviews);
+	}
+	
+	@Test
+	public void shouldAddCommentToReview() {
+		//Arrange
+		String commentText = "comment test";
+		long reviewId = reviewOne.getId();
+		
+		//Act
+		underTest.addCommentsToReview(reviewId, commentText);
+		ArgumentCaptor<Comment> commentArgument = ArgumentCaptor.forClass(Comment.class);
+		
+		//Assert
+		verify(commentRepo).save(commentArgument.capture());
+		assertEquals("comment test", commentArgument.getValue().getCommentText());
+
 	}
 
 }

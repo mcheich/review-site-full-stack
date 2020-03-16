@@ -3,6 +3,7 @@ package reviews.models;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -16,8 +17,8 @@ public class Comment {
 	@ManyToOne
 	private Review review;
 	
+	@Lob
 	private String commentText;
-
 
 	public long getId() {
 		return Id;
@@ -34,6 +35,11 @@ public class Comment {
 	
 	public Comment(String commentText) {
 		this.commentText = commentText;
+	}
+
+	public Comment(String commentText, Review review) {
+		this.commentText = commentText;
+		this.review = review;
 	}
 
 	/************* Overrides ****************/
